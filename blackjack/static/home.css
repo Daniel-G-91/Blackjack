@@ -1,0 +1,262 @@
+html {
+    background-color: hsl(260, 90%, 4%);
+    overflow-y: auto;
+    overflow-x: auto;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+
+}
+
+.preload:before {
+    background-image: url('../static/images/home-page.jpg');
+    display: none;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('../static/images/home-page.jpg');
+    background-size: contain; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.blanck {
+    height: 20%;
+}
+.blank {
+    height: 0%;
+}
+
+.neon-text {
+    margin-top: -200px;
+    height: 5%;
+    justify-content: center;
+    text-align: start;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: hsl(180, 68%, 79%); 
+    text-shadow: 
+        0 0 5px hsl(180, 68%, 79%),   
+        0 0 10px hsl(229, 100%, 50%), 
+        0 0 20px hsl(229, 100%, 50%),  
+        0 0 30px hsl(229, 100%, 50%),  
+        0 0 40px hsl(229, 100%, 50%),  
+        0 0 50px hsl(229, 100%, 50%),  
+        0 0 60px hsl(180, 68%, 79%);  
+        
+}
+
+.text {
+    height: 150px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 25px;
+    color: hsl(180, 68%, 79%);
+    margin-bottom: 0px;
+}
+
+
+.rules {
+    height: 150px;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.rules ul{
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    display: block;
+    text-align: left;
+    list-style-type: disc; 
+    padding-left: 20px; 
+    font-size: 0.9rem;
+    color: hsl(180, 68%, 79%);
+}
+
+.button {
+    display: flex;
+    justify-content: center;
+    gap: 25px; 
+    padding: 50px;
+    text-align: center;
+    align-items: center;
+}
+
+#play-game_b:active, #rules_b:active {
+
+    transform: scale(0.80);
+    background-color: hsl(180, 68%, 29%);
+    transition: transform 0.1s ease;
+
+}
+
+#play-game_b:hover, #rules_b:hover {
+
+    background-color: hsl(180, 68%, 49%);
+
+}
+
+#play-game_b, #rules_b {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-radius: 10px;
+    color: rgb(1, 15, 11);
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 5px;
+    width: 150px;
+    height: 45px;
+    cursor: pointer;
+    background-color: hsl(180, 68%, 79%);
+    box-shadow:
+    0 0 5px hsl(180, 68%, 79%),   
+        0 0 15px hsl(229, 100%, 10%),  
+        0 0 20px hsl(229, 100%, 30%),  
+        0 0 30px hsl(229, 100%, 30%),  
+        0 0 40px hsl(229, 100%, 20%);
+}
+
+
+@media (max-width: 1000px), (max-height: 900px){
+
+    .neon-text {
+        margin-top: -170px;
+        
+    }
+    
+    .rules ul{
+        margin-top: -25px;
+        font-size: 0.8rem;
+    }
+
+    
+    .button {
+        margin-top: -55px;
+    }
+
+}
+
+@media (max-height: 800px){
+
+    .neon-text {
+        margin-top: -150px;
+        
+    }
+  
+    .text {
+        font-size: 19px;
+    }
+
+
+    .rules ul{
+        margin-top: -25px;
+        font-size: 0.7rem;
+        margin-bottom: 10px;
+    }
+
+
+    #play-game_b, #rules_b {
+        font-size: 8px;
+        padding: 10px 10px;
+        margin: 2px;
+        width: 100px;
+        height: 30px;
+        text-align: center;
+        align-items: center;}
+
+}
+
+@media (max-width: 850px), (max-height: 650px){
+
+    .neon-text {
+        margin-top: -150px;
+        font-size: 30px;
+    }
+
+    .text {
+        font-size: 15px;
+    }
+
+    .rules ul{
+        margin-top: -25px;
+        font-size: 0.7rem;
+    }
+
+
+    .button {
+        margin-top: -55px;
+    }
+
+    #play-game_b, #rules_b {
+        font-size: 8px;
+        padding: 10px 10px;
+        margin: 2px;
+        width: 100px;
+        height: 30px;
+        text-align: center;
+        align-items: center;}
+}
+
+
+@media (max-width: 400px), (max-height: 600px){
+
+    .neon-text {
+        margin-top: -60px;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .text {
+        
+        font-size: 12px;
+    }
+    
+    .rules ul{
+
+        margin-top: -65px;
+        font-size: 0.5rem;
+        margin-bottom: 10px;
+    }
+
+
+    #play-game_b, #rules_b {
+        margin-top: -65px;
+        font-size: 7px;
+        padding: 10px 10px;
+        width: 80px;
+        height: 10px;
+        text-align:center;
+        align-items: start;
+        justify-content: center;
+    }
+}
+
+
+@media (max-height: 400px){
+
+    .neon-text {
+        margin-top: 10px;
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+
+    .rules ul{
+        display: none;
+    }   
+
+    
+    .button {
+        margin-top: -100px;
+    }
+
+}

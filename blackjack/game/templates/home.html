@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/home.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'images/home-page.jpg' %}">
+    <title>Blackjack</title>
+</head>
+<body>
+    <div class="preload"></div>
+    <p class="blanck">''</p>
+    
+    <p class="neon-text">Blackjack</p>
+
+    <div class="text" id="text">
+        
+        <li>Back-end: Python, Django</li>
+        <li>Front-end: JavaScript, HTML, CSS</li>
+    </div>
+
+    <div class="rules" id="rules">
+
+        <ul>Rules:
+            <li>The goal is to reach 21 points or have a higher score than the dealer without exceeding 21.</li>
+            <li>You and the dealer each start with two cards. One of the dealer's cards is hidden.</li>
+            <li>Number cards (2-10) are worth their face value. Face cards (J, Q, K) are worth 10. Aces are worth 1 or 11.</li>
+            <li>After the initial deal, you can:
+                <ol>Hit: Get another card to increase your score.</ol>
+                <ol>Stand: Keep your current score and end your turn.</ol>
+            </li>
+            <li>If your score exceeds 21, you "bust" and lose the game.</li>
+            <li>After your turn, the dealer reveals their hidden card and must keep drawing cards until their score is 17 or higher.</li>
+            <li>The game ends when you or the dealer busts or both stand, and the higher score wins.</li>
+        </ul>
+    
+    </div>
+
+    <div class="button">
+        <button id="play-game_b" form ='play-game'>PLAY GAME!</button>
+        <button id="rules_b">RULES</button>
+    </div>
+
+    <p class="blank">''</p>
+    
+    <form id = 'play-game' method="POST" action="{% url 'start_blackjack' %}">
+        {% csrf_token %}
+    </form>
+
+    <script>
+        document.getElementById('rules_b').addEventListener('click', function() {
+            const text = document.getElementById('text');
+            const rules = document.getElementById('rules');
+
+            if (text.style.display == 'none') {
+                text.style.display = 'block';
+                rules.style.display = 'none';
+            } else {
+                text.style.display = 'none';
+                rules.style.display = 'flex';
+            }
+        });
+    </script>
+
+</body>
+</html>

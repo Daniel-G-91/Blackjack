@@ -1,0 +1,799 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    <link rel="stylesheet" href="{% static '/style.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.jpg' %}">
+    <link rel="preload" as="image" href="{% static 'images/background.jpg' %}">
+</head>
+
+<body>
+
+<div class="preload"></div>    
+<h1>Blackjack</h1>
+
+<!--  -------------------------------------------------------------------------------- BETING AREA --------------------------------------------------------------------------------  -->
+<!--  ----------------------------------------------------------------- player-bet | dealer-bet | round-bet | deck ----------------------------------------------------------------  -->
+
+<div class="top_block">
+
+    <!--  ----------------------------------------------------------------------------- player-bet --------------------------------------------------------------------------------  -->
+
+        <div class="player-bet" id="player-bet">
+            {% for chip in player_bet %}
+                {% if chip == 25 %}
+                    <div class="player-b">
+                        <img src="{% static 'images/chip25'|add:'.png' %}" alt="chip25" data-value="25" class="chip">
+                        <div class="chip-text">25</div>
+                    </div>
+                {% elif chip == 50 %}
+                    <div class="player-b">
+                        <img src="{% static 'images/chip50'|add:'.png' %}" alt="chip50" data-value="50" class="chip">
+                        <div class="chip-text">50</div>
+                    </div>
+                {% else %}
+                    <div class="player-b">
+                        <img src="{% static 'images/chip100'|add:'.png' %}" alt="chip100" data-value="100" class="chip">
+                        <div class="chip-text">100</div>
+                    </div>    
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    <!--  ------------------------------------------------------------------------------- dealer-bet -------------------------------------------------------------------------------  -->
+
+        <div class="dealer-bet" id="dealer-bet">
+            {% for chip in player_bet %}
+                {% if chip == 25 %}
+                    <div class="dealer-b">
+                        <img src="{% static 'images/chip25'|add:'.png' %}" alt="chip25" data-value="25" class="chip">
+                        <div class="chip-text">25</div>
+                    </div>
+                {% elif chip == 50 %}
+                    <div class="dealer-b">
+                        <img src="{% static 'images/chip50'|add:'.png' %}" alt="chip50" data-value="50" class="chip">
+                        <div class="chip-text">50</div>
+                    </div>
+                {% else %}
+                    <div class="dealer-b">
+                        <img src="{% static 'images/chip100'|add:'.png' %}" alt="chip100" data-value="100" class="chip">
+                        <div class="chip-text">100</div>
+                    </div>    
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    <!--  -------------------------------------------------------------------------------- round-bet ---------------------------------------------------------------------------------  -->
+
+        <div class="round-bet" id="round-bet">
+            {% for chip in round_bet %}
+                {% if chip == 25 %}
+                    <div class="round-b">
+                        <img src="{% static 'images/chip25'|add:'.png' %}" alt="chip25" data-value="25">
+                        <div class="chip-text">25</div>
+                    </div>
+                {% elif chip == 50 %}
+                    <div class="round-b">
+                        <img src="{% static 'images/chip50'|add:'.png' %}" alt="chip50" data-value="50">
+                        <div id="chip-text">50</div>
+                    </div>
+                {% else %}
+                    <div id="round-b">
+                        <img src="{% static 'images/chip100'|add:'.png' %}" alt="chip100" data-value="100">
+                        <div class="chip-text">100</div>
+                    </div>    
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    <!--  ---------------------------------------------------------------------------------- deck -------------------------------------------------------------------------------------  -->
+
+        
+        <div class="deck">
+            <img src="{% static 'images/back.jpg' %}" alt="deck-back-1">
+            <img src="{% static 'images/back.jpg' %}" alt="deck-back-2">
+            <img src="{% static 'images/back.jpg' %}" alt="deck-back-3">
+        </div>
+
+</div>
+
+<!--  ------------------------------------------------------------------------------------ CHIPS --------------------------------------------------------------------------------------  -->
+<!--  ------------------------------------------------------------ player-chips | bet-button | new-round button | dealer-chips --------------------------------------------------------  -->
+
+
+<div class="middle_block">
+
+    <!--  --------------------------------------------------------------------------- player-chips ------------------------------------------------------------------------------------  -->
+
+    <div class="player-chips" id="player-chips">
+        {% for chip in player_chips %}
+            {% if chip == 25 %}
+                <div class="player-chip">
+                    <img src="{% static 'images/chip25'|add:'.png' %}" alt="chip25" data-value="25" class="chip">
+                    <div class="chip-text">25</div>
+                </div>
+            {% elif chip == 50 %}
+                <div class="player-chip">
+                    <img src="{% static 'images/chip50'|add:'.png' %}" alt="chip50" data-value="50" class="chip">
+                    <div class="chip-text">50</div>
+                </div>
+            {% else %}
+                <div class="player-chip">
+                    <img src="{% static 'images/chip100'|add:'.png' %}" alt="chip100" data-value="100" class="chip">
+                    <div class="chip-text">100</div>
+                </div>
+            {% endif %}    
+        {% endfor %}
+    </div>
+
+    <!--  --------------------------------------------------------------------------- bet-button ------------------------------------------------------------------------------------  -->
+
+    <button id="bet-button" form='place_bet' disabled>PLACE BET!</button>        
+
+    <div class="bets">
+        <div id="bets">
+                <h2 id="round-bets-h2"><span id="round-bets"> {{ game.round_bet_v }} </span>$</h2>
+        </div>
+    </div>
+        
+    <form id = 'place_bet' method="POST" action="{% url 'place_bet' game_id=game.id %}">
+        {% csrf_token %}
+    </form>    
+
+    <button id="new-round" form="round">NEW ROUND</button>
+    <form id = 'round' method="POST" action="{% url 'round' game_id=game.id %}">
+        {% csrf_token %}
+    </form>
+    <!--  --------------------------------------------------------------------------- dealer-chips ----------------------------------------------------------------------------------  -->
+
+    <div class="dealer-chips" id="dealer-chips">
+        {% for chip in dealer_chips %}
+            {% if chip == 25 %}
+                <div class="dealer-chip">
+                    <img src="{% static 'images/chip25'|add:'.png' %}" alt="chip25" data-value="25" class="chip">
+                    <div class="chip-text">25</div>
+                </div>
+            {% elif chip == 50 %}
+                <div class="dealer-chip">
+                    <img src="{% static 'images/chip50'|add:'.png' %}" alt="chip50" data-value="50" class="chip">
+                    <div class="chip-text">50</div>
+                </div>
+            {% else %}
+                <div class="dealer-chip">
+                    <img src="{% static 'images/chip100'|add:'.png' %}" alt="chip100" data-value="100" class="chip">
+                    <div class="chip-text">100</div>
+                </div>    
+            {% endif %}    
+        {% endfor %}
+    </div>
+</div>
+
+
+<!--  ------------------------------------------------------------------------------------ SCORES --------------------------------------------------------------------------------------  -->
+<!--  ----------------------------------------------------------------------------- scores | chips_value -------------------------------------------------------------------------------  -->
+
+<div class="scores">
+    <div id="player-s">
+        <h2>[ <span id="player-v"> {{ game.player_chip_v|default:500 }} </span> $] - Your Hand: <span id="player-score"> {{ game.player_score }} </span> </h2>
+    </div>
+    
+    <div id="dealer-s">
+        <h2>[ <span id="dealer-v"> {{ game.dealer_chip_v|default:500 }} </span> $] - Dealer's Hand: <span id="dealer-score"> {{ game.dealer_score }} </span> </h2>
+    </div>
+</div>
+
+
+<!--  ------------------------------------------------------------------------------------ CARDS --------------------------------------------------------------------------------------  -->
+<!--  -------------------------------------------------------------------------- player-hand | dealer-hand ----------------------------------------------------------------------------  -->
+
+
+<div class="bottom_block">
+
+    
+    <!--  ---------------------------------------------------------------------------- player-hand ------------------------------------------------------------------------------------  -->
+
+    <div id="player-hand">
+        {% for card in player_hand %}
+            <div class="card-container">
+                <div class="card">
+                    <!-- Front of the card -->
+                    <img src="{% static 'images/'|add:card.0|add:' '|add:card.1|add:'.jpg' %}" alt="{{ card.0 }} of {{ card.1 }}" class="card-face front">
+                    <!-- Back of the card -->
+                    <img src="{% static 'images/back.jpg' %}" alt="Back of card" class="card-face back">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <!--  ---------------------------------------------------------------------------- dealer-hand ------------------------------------------------------------------------------------  -->
+
+    <div id="dealer-hand">
+        {% for card in dealer_hand %}
+            <div class="card-container">
+                <div class="card">
+                    <img src="{% static 'images/'|add:card.0|add:' '|add:card.1|add:'.jpg' %}" alt="{{ card.0 }} of {{ card.1 }}" class="card-face front">
+                    <img src="{% static 'images/back.jpg' %}" alt="Back of card" class="card-face back">
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!--  ----------------------------------------------------------------------------------- BUTTONS ------------------------------------------------------------------------------------  -->
+<!--  ------------------------------------------------------------------------------- hit_b | stand_b --------------------------------------------------------------------------------  -->
+
+    <div class="buttons">
+        <button id="hit_b" form ='hit' disabled>HIT</button>
+        <button id="stand_b" form ='stand' disabled>STAND</button>
+        <button id="play-again_b" form ='play-again'>PLAY AGAIN</button>
+        <button id="go-home_b" form ='go-home'>GO HOME</button>
+    </div>
+
+    <form id = 'hit' method="POST" action="{% url 'hit' game_id=game.id %}">
+        {% csrf_token %}
+    </form>
+    <form id = 'stand' method="POST" action="{% url 'stand' game_id=game.id %}">
+        {% csrf_token %}
+    </form>
+    
+    <form id = 'play-again' method="POST" action="{% url 'start_blackjack' %}">
+        {% csrf_token %}
+    </form>
+
+    <form id = 'go-home' method="POST" action="{% url 'home' %}">
+        {% csrf_token %}
+    </form>
+
+<!--  ------------------------------------------------------------------------------- JavaScript FTW ---------------------------------------------------------------------------------  -->
+
+<script>
+    const staticBasePath = "{% static 'images/' %}";
+</script>
+
+<!--  ------------------------------------------------------------------------------- blackjack_view ---------------------------------------------------------------------------------  -->
+
+<script>
+
+    let playerBetV = 0;
+    let playerChipV = parseInt("{{ player_chip_v|default:500 }}", 10);
+    
+    // Function to add the click event listener to a chip
+    function addChipEventListener(chipElement) {
+        chipElement.addEventListener('click', function () {
+            const chipValue = parseInt(chipElement.querySelector('.chip').dataset.value);
+            const playerChips = document.getElementById('player-chips');
+            const playerBet = document.getElementById('player-bet');
+            const buttonB = document.getElementById('bet-button');
+
+            // Check if chip is currently in player-chips area
+            if (playerChips.contains(chipElement)) {
+                // Create a new div for the chip in player-bet area
+                const chipDiv = document.createElement('div');
+                chipDiv.className = "player-b";
+
+                // Create img and text elements within the new div
+                const img = document.createElement('img');
+                img.src = `${staticBasePath}chip${chipValue}.png`;
+                img.alt = `chip${chipValue}`;
+                img.dataset.value = chipValue;
+                img.className = 'chip';
+
+                chipDiv.appendChild(img);
+
+                const chipText = document.createElement('div');
+                chipText.className = "chip-text";
+                chipText.textContent = chipValue;
+                chipDiv.appendChild(chipText);
+
+                // Add event listener to the dynamically created chip to move it back
+                chipDiv.addEventListener('click', function () {
+                    // Move chip back to player-chips
+                    playerChips.appendChild(chipElement);
+                    playerBet.removeChild(chipDiv);
+                    
+                    // Update values
+                    playerBetV -= chipValue;
+                    playerChipV += chipValue;
+                    document.getElementById('player-v').textContent = playerChipV;
+                    document.getElementById('round-bets').textContent = playerBetV + '$';
+                    
+                    if(playerBetV>0){
+                        buttonB.disabled = false;
+                    } else {
+                        buttonB.disabled = true;
+                    }
+
+                    // Reattach event listener so it can be clicked again in player-chips
+                    addChipEventListener(chipElement);
+                });
+
+                // Append to player-bet and remove from player-chips
+                playerBet.appendChild(chipDiv);
+                playerChips.removeChild(chipElement);
+
+                // Update values
+                playerBetV += chipValue;
+                playerChipV -= chipValue;
+                document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+                document.getElementById('player-v').textContent = playerChipV;
+                document.getElementById('round-bets').textContent = playerBetV + '$';
+
+                if(playerBetV>0){
+                    buttonB.disabled = false;
+                } else {
+                    buttonB.disabled = true;
+                }
+            }
+        });
+    }
+
+    // Attach the event listener to each chip in player-chips initially
+    document.querySelectorAll('.player-chip').forEach(addChipEventListener);
+
+</script>
+
+<!--  ------------------------------------------------------------------------------- place_bet_view ---------------------------------------------------------------------------------  -->
+<script>
+    function renderChips(chipsArray, containerId, chipClass) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = ''; // Clear any existing content
+
+                chipsArray.forEach(chipValue => {
+                    const chipDiv = document.createElement('div');
+                    chipDiv.className = chipClass;
+
+                    const img = document.createElement('img');
+                    img.src = `${staticBasePath}chip${chipValue}.png`;
+                    img.alt = `chip${chipValue}`;
+                    img.dataset.value = chipValue;
+                    img.className = 'chip';
+
+                    chipDiv.appendChild(img);
+
+                    const chipText = document.createElement('div');
+                    chipText.className = "chip-text";
+                    chipText.textContent = chipValue;
+                    chipDiv.appendChild(chipText);
+
+                    container.appendChild(chipDiv);
+                });
+            }
+</script>
+
+<script>
+    document.getElementById('place_bet').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                playerBetV: playerBetV,  // Send current bet value
+                playerChipV: playerChipV  // Send player's remaining chips
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            playerBetV = 0;
+            const playerChipV = data.playerChipsV;
+            const playerChips = data.playerChips;
+            const dealerChips = data.dealerChips;
+            const dealerChipsV = data.dealerChipsV;
+            const roundBet = data.roundBet;
+            const playerBet = document.getElementById('player-bet');
+
+            playerBet.innerHTML = '';
+
+            document.getElementById('dealer-v').textContent = data.dealerChipsV
+            document.getElementById('player-v').textContent = data.playerChipsV
+
+            // Update HTML elements
+            renderChips(playerChips, 'player-chips', 'player-chip');
+            renderChips(dealerChips, 'dealer-chips', 'dealer-chip');
+            renderChips(roundBet, 'round-bet', 'round-b');
+            
+            // Update round bet amount and scores text
+            document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+            document.getElementById('round-bets').textContent = data.roundBetV + '$';
+            document.getElementById('player-score').textContent = data.playerScoreV;
+            document.getElementById('dealer-score').textContent = data.dealerScoreV;
+
+            // Disable the "place-bet" button
+            document.getElementById('bet-button').disabled = true;
+            document.getElementById('hit_b').disabled = false;
+            document.getElementById('stand_b').disabled = false;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+        setTimeout(()=>{
+        // Reveal the player cards
+        document.querySelectorAll('#player-hand .card-container .card').forEach(card => {
+            card.classList.add('flipped');
+        });
+
+        // Reveal the first dealer card only
+        const dealerCards = document.querySelectorAll('#dealer-hand .card-container .card');
+        if (dealerCards[0]) {
+            dealerCards[0].classList.add('flipped');
+
+        }},400)
+    });
+
+    function applyCardRotation(selector) {
+    const cardContainers = document.querySelectorAll(selector);
+    const cardCount = cardContainers.length;
+    const middleIndex = Math.floor(cardCount / 2);
+
+    cardContainers.forEach((card, index) => {
+       
+        let rotationValue;
+
+        if (cardCount % 2 === 0) {
+            if (index < middleIndex) {
+                rotationValue = (-15 + (index * 5)) + 'deg';
+            } else {
+                rotationValue = (15 - ((cardCount - index) * 5)) + 'deg';
+            }
+        } else {
+            if (index < middleIndex) {
+                rotationValue = (-15 + (index * 5)) + 'deg';
+            } else if (index === middleIndex) {
+                rotationValue = '0deg';
+            } else {
+                rotationValue = (15 - ((cardCount - index) * 5)) + 'deg';
+            }
+        }
+
+        // Set the CSS variable --rotation for the current card
+        card.style.setProperty('--rotation', rotationValue);
+    });
+    }
+
+
+    window.addEventListener('DOMContentLoaded', function () {
+        applyCardRotation('#player-hand .card-container');
+        applyCardRotation('#dealer-hand .card-container');
+    });    
+
+</script>
+
+<!--  ------------------------------------------------------------------------------- hit_view -------------------------------------------------------------------------------------------  -->
+
+<script>
+
+    document.getElementById('hit').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        document.getElementById('hit_b').disabled = true;
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            const playerScore = data.player_score;
+            
+            document.getElementById('player-hand').innerHTML = '';  
+    
+            data.player_hand.forEach(function(card, index) {
+                
+                
+                    const cardCont = document.createElement('div');
+                    cardCont.className = "card-container";
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = "card";
+                    const imgF = document.createElement('img');
+                    imgF.src = `${staticBasePath}${card[0]} ${card[1]}.jpg`;
+                    imgF.className = "card-face front"; 
+                    imgF.alt = card[0] + ' of ' + card[1];
+                    cardDiv.appendChild(imgF);
+                    const imgB = document.createElement('img');
+                    imgB.src = `${staticBasePath}back.jpg`;
+                    imgB.className = "card-face back"; 
+                    imgB.alt = "Back of card";
+                    cardDiv.appendChild(imgB);
+                    cardDiv.classList.add('flipped');
+                    cardCont.appendChild(cardDiv);
+                    document.getElementById('player-hand').appendChild(cardCont);
+                
+            });
+    
+            document.getElementById('player-score').textContent = data.player_score;
+            document.getElementById('dealer-score').textContent = data.dealer_score;
+
+            applyCardRotation('#player-hand .card-container');
+            applyCardRotation('#dealer-hand .card-container');
+            
+            if (playerScore>21){
+                document.getElementById('hit_b').disabled = true;
+                document.getElementById('stand_b').disabled = true;
+                document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+                document.getElementById('round-bets').textContent = data.gameResult;
+                document.getElementById('dealer-v').textContent = data.dealerChipsV;
+                document.getElementById('round-bet').innerHTML = '';
+                const dealerChips = data.dealerChips;
+                renderChips(dealerChips, 'dealer-chips', 'dealer-chip');
+                document.querySelectorAll('#dealer-hand .card-container .card').forEach(card => {
+                    card.classList.add('flipped');
+                });
+
+                if (data.playerChipsV == 0){
+                    document.getElementById('bet-button').style.display = 'none';
+                    document.getElementById('new-round').style.display = 'none';
+                    document.getElementById('play-again_b').style.display = 'flex';
+                    document.getElementById('go-home_b').style.display = 'flex';
+                    document.getElementById('hit_b').style.display = 'none';
+                    document.getElementById('stand_b').style.display = 'none';
+                    document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+                    document.getElementById('round-bets-h2').style.width = '350px';
+                    const gameResult = document.getElementById('round-bets');
+                    gameResult.textContent = 'DEALER WINS THE GAME!';
+                    gameResult.style.width = '100%';
+                    gameResult.style.color = 'hsl(73, 82%, 59%)';
+                    gameResult.style.textShadow = `0 0 5px hsl(0, 60%, 76%),
+                                                    0 0 10px hsl(0, 61%, 33%),
+                                                    0 0 20px hsl(0, 61%, 33%),
+                                                    0 0 30px hsl(0, 61%, 33%),
+                                                    0 0 40px hsl(0, 61%, 33%),
+                                                    0 0 50px hsl(0, 61%, 33%),
+                                                    0 0 60px hsl(0, 60%, 76%)`;
+                    gameResult.style.justifyContent = 'center';
+                    gameResult.style.marginLeft = '40px';
+                } else {
+                    document.getElementById('bet-button').style.display = 'none';
+                    document.getElementById('new-round').style.display = 'flex';
+                }
+                
+                
+                
+            } else {
+                document.getElementById('hit_b').disabled = false;
+            }
+            
+        })
+        
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+    
+    </script>
+
+
+<!--  ------------------------------------------------------------------------------- stand_view -------------------------------------------------------------------------------------------  -->
+
+
+<script>
+
+    document.getElementById('stand').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        document.getElementById('hit_b').disabled = true;
+        document.getElementById('stand_b').disabled = true;
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            const gameResult = data.gameResult
+            
+            document.getElementById('dealer-hand').innerHTML = '';  
+    
+            data.dealer_hand.forEach(function(card, index) {
+                
+                
+                    const cardCont = document.createElement('div');
+                    cardCont.className = "card-container";
+                    const cardDiv = document.createElement('div');
+                    cardDiv.className = "card";
+                    const imgF = document.createElement('img');
+                    imgF.src = `${staticBasePath}${card[0]} ${card[1]}.jpg`;
+                    imgF.className = "card-face front"; 
+                    imgF.alt = card[0] + ' of ' + card[1];
+                    cardDiv.appendChild(imgF);
+                    const imgB = document.createElement('img');
+                    imgB.src = `${staticBasePath}back.jpg`;
+                    imgB.className = "card-face back"; 
+                    imgB.alt = "Back of card";
+                    cardDiv.appendChild(imgB);
+                    cardDiv.classList.add('flipped');
+                    cardCont.appendChild(cardDiv);
+                    document.getElementById('dealer-hand').appendChild(cardCont);
+                
+            });
+    
+            document.getElementById('dealer-score').textContent = data.dealer_score;
+
+            applyCardRotation('#player-hand .card-container');
+            applyCardRotation('#dealer-hand .card-container');
+            document.getElementById('round-bet').innerHTML = '';
+            document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+            document.getElementById('round-bets').textContent = data.gameResult;
+            const dealerChips = data.dealerChips;
+            const playerChips = data.playerChips;
+
+            if (gameResult=='Dealer wins!'){    
+                document.getElementById('dealer-v').textContent = data.dealerChipsV;
+                renderChips(dealerChips, 'dealer-chips', 'dealer-chip');
+                
+            } else if (gameResult == 'You win!') {
+                document.getElementById('player-v').textContent = data.playerChipsV;
+                renderChips(playerChips, 'player-chips', 'player-chip');
+            } else {
+                document.getElementById('dealer-v').textContent = data.dealerChipsV;
+                renderChips(dealerChips, 'dealer-chips', 'dealer-chip');   
+                document.getElementById('player-v').textContent = data.playerChipsV;
+                renderChips(playerChips, 'player-chips', 'player-chip');
+            }
+
+            
+            if (data.playerChipsV == 0 || data.dealerChipsV == 0){
+                    document.getElementById('bet-button').style.display = 'none';
+                    document.getElementById('new-round').style.display = 'none';
+                    document.getElementById('play-again_b').style.display = 'flex';
+                    document.getElementById('go-home_b').style.display = 'flex';
+                    document.getElementById('hit_b').style.display = 'none';
+                    document.getElementById('stand_b').style.display = 'none';
+                    if(data.playerChipsV == 0){
+                        document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+                        document.getElementById('round-bets-h2').style.width = '350px';
+                        const gameResult = document.getElementById('round-bets');
+                        gameResult.textContent = 'DEALER WINS THE GAME!';
+                        gameResult.style.width = '100%';
+                        gameResult.style.color = 'hsl(73, 82%, 59%)';
+                        gameResult.style.textShadow = `0 0 5px hsl(0, 60%, 76%),
+                                                    0 0 10px hsl(0, 61%, 33%),
+                                                    0 0 20px hsl(0, 61%, 33%),
+                                                    0 0 30px hsl(0, 61%, 33%),
+                                                    0 0 40px hsl(0, 61%, 33%),
+                                                    0 0 50px hsl(0, 61%, 33%),
+                                                    0 0 60px hsl(0, 60%, 76%)`;
+                        gameResult.style.justifyContent = 'center';
+                        gameResult.style.marginLeft = '40px';
+                    } else {
+                        document.getElementById('round-bets-h2').innerHTML = `<span id="round-bets"></span>`;
+                        document.getElementById('round-bets-h2').style.width = '350px';
+                        const gameResult = document.getElementById('round-bets');
+                        gameResult.textContent = 'YOU WIN THE GAME!';
+                        gameResult.style.width = '100%';
+                        gameResult.style.color = 'hsl(73, 82%, 59%)';
+                        gameResult.style.textShadow = `0 0 5px hsl(180, 68%, 79%),
+                                                    0 0 10px hsl(101, 65%, 51%),
+                                                    0 0 20px hsl(101, 65%, 51%),
+                                                    0 0 30px hsl(101, 65%, 51%),
+                                                    0 0 40px hsl(101, 65%, 51%),
+                                                    0 0 50px hsl(101, 65%, 51%),
+                                                    0 0 60px hsl(180, 68%, 79%)`;
+                        gameResult.style.justifyContent = 'center';
+                        gameResult.style.marginLeft = '60px';
+                    }
+                } else {
+                    document.getElementById('bet-button').style.display = 'none';
+                    document.getElementById('new-round').style.display = 'flex';
+                }
+            
+        })
+        
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+    
+    </script>
+
+
+<!--  ------------------------------------------------------------------------------- newround_view -------------------------------------------------------------------------------------------  -->
+
+
+<script>
+
+    document.getElementById('round').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+        fetch(this.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',  
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            playerChipV = data.playerChipsV;
+
+            document.getElementById('dealer-score').textContent = 0;
+            document.getElementById('player-score').textContent = 0;
+            document.getElementById('round-bets').textContent = '0$';
+            
+            document.getElementById('player-hand').innerHTML = '';  
+    
+            data.player_hand.forEach(function(card, index) {
+        
+            const cardCont = document.createElement('div');
+            cardCont.className = "card-container";
+            const cardDiv = document.createElement('div');
+            cardDiv.className = "card";
+            const imgF = document.createElement('img');
+            imgF.src = `${staticBasePath}${card[0]} ${card[1]}.jpg`;
+            imgF.className = "card-face front"; 
+            imgF.alt = card[0] + ' of ' + card[1];
+            cardDiv.appendChild(imgF);
+            const imgB = document.createElement('img');
+            imgB.src = `${staticBasePath}back.jpg`;
+            imgB.className = "card-face back"; 
+            imgB.alt = "Back of card";
+            cardDiv.appendChild(imgB);
+            cardCont.appendChild(cardDiv);
+            document.getElementById('player-hand').appendChild(cardCont);
+        
+            });
+
+            document.getElementById('dealer-hand').innerHTML = '';  
+    
+            data.dealer_hand.forEach(function(card, index) {
+        
+            const cardCont = document.createElement('div');
+            cardCont.className = "card-container";
+            const cardDiv = document.createElement('div');
+            cardDiv.className = "card";
+            const imgF = document.createElement('img');
+            imgF.src = `${staticBasePath}${card[0]} ${card[1]}.jpg`;
+            imgF.className = "card-face front"; 
+            imgF.alt = card[0] + ' of ' + card[1];
+            cardDiv.appendChild(imgF);
+            const imgB = document.createElement('img');
+            imgB.src = `${staticBasePath}back.jpg`;
+            imgB.className = "card-face back"; 
+            imgB.alt = "Back of card";
+            cardDiv.appendChild(imgB);
+            cardCont.appendChild(cardDiv);
+            document.getElementById('dealer-hand').appendChild(cardCont);
+        
+            });
+
+            applyCardRotation('#player-hand .card-container');
+            applyCardRotation('#dealer-hand .card-container');
+
+            document.getElementById('bet-button').style.display = 'flex';
+            document.getElementById('bet-button').disabled = true;
+            document.getElementById('new-round').style.display = 'none';
+            document.querySelectorAll('.player-chip').forEach(addChipEventListener);
+      
+        })
+        
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+    
+    </script>
+
+
+</body>
+
+</html>

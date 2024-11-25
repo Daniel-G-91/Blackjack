@@ -1,0 +1,551 @@
+/* ------------------- GAME.html ------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.preload:before {
+    background-image: url('../static/images/background.jpg');
+    display: none;
+}
+
+html {
+    min-height: 100vh;
+    min-width: 100vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+body {
+    background-image: url('../static/images/background.jpg');
+    background-color:hsl(240, 83%, 9%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    justify-content: center;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    min-width: 100vw;
+    cursor:default;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 50px;
+    color: hsl(180, 68%, 79%); 
+    text-shadow: 
+        0 0 5px hsl(180, 68%, 79%),   
+        0 0 10px hsl(229, 100%, 50%), 
+        0 0 20px hsl(229, 100%, 50%),  
+        0 0 30px hsl(229, 100%, 50%),  
+        0 0 40px hsl(229, 100%, 50%),  
+        0 0 50px hsl(229, 100%, 50%),  
+        0 0 60px hsl(180, 68%, 79%);  
+}
+
+.top_block {
+    
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 34% 33% 33%;
+    grid-template-areas: 
+        "a b c";
+    justify-items: center;
+    align-items: center;
+}
+
+
+.player-bet {
+    grid-area: a;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    position: relative;
+}
+
+.player-b {
+    position: relative;
+    margin-left: -35px;
+    
+}
+
+.player-b img {
+    height: 75px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.player-b:hover{
+    transform: scale(1.1);
+}
+
+
+.round-bet {
+    grid-area: b;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.round-b {
+    position: relative;
+    margin-left: -35px;
+    
+}
+
+.round-b img {
+    height: 75px;
+    border-radius: 25px;
+}
+
+
+.deck {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    grid-area: c;
+    justify-content: left;
+    align-items: center;
+    position: relative;
+    margin-left: 145px;
+}
+
+.deck img {
+    height: 200px;
+    box-shadow: 
+                0 1px 3px rgba(0,0,0,0.2),
+                0 1px 2px rgba(0,0,0,0.24),
+                0 2px 6px rgba(0,0,0,0.3),
+                0 2px 4px rgba(0,0,0,0.22);
+
+    position: relative;
+    justify-content: center;
+    border-radius: 16px;
+    align-items: center;
+    transform: rotate(90deg);
+    
+}
+
+.deck img:nth-child(1) {
+    transform: rotate(-95deg);
+    position: relative;
+}
+
+.deck img:nth-child(2) {
+    transform: rotate(95deg);
+    position: absolute;
+}
+
+.deck img:nth-child(3) {
+    transform: rotate(-93deg);
+    position: absolute;
+}
+
+.middle_block {
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 48% 4% 48%;
+    grid-template-areas:
+        "i p o" 
+        "h w j"
+        "x y z";
+    justify-items: center;
+    align-items: center;
+    height: 160px;
+}
+
+#player-chips {
+    height: 79px;
+}
+
+.player-chips {
+    margin-left: 65px;
+    grid-area: x;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.player-chip {
+    position: relative;
+    margin-left: -35px;    
+}
+
+.player-chip img {
+    height: 75px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.player-chip:hover {
+    transform: scale(1.1);
+}
+
+#bet-button {
+    grid-area: w;
+    margin-left: 0px;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#bet-button:disabled, #hit_b:disabled, #stand_b:disabled {
+    background-color: hsl(73, 82%, 30%);
+    box-shadow: 0px 0px 0px rgb(141, 195, 55);
+}
+
+#new-round {
+    grid-area: w;
+    margin-left: 0px;
+    z-index: 10;
+}
+
+.bets {
+    justify-content: center;
+    width: 200px;
+    grid-area: p;
+    display: flex;
+    font-size: 15px;
+    color: hsl(180, 68%, 79%); 
+    text-shadow: 
+        0 0 5px hsl(180, 68%, 79%),   
+        0 0 10px hsl(229, 100%, 50%), 
+        0 0 20px hsl(229, 100%, 50%),  
+        0 0 30px hsl(229, 100%, 50%),  
+        0 0 40px hsl(229, 100%, 50%),  
+        0 0 50px hsl(229, 100%, 50%),  
+        0 0 60px hsl(180, 68%, 79%);  
+}
+.player-chip .chip-text {
+    cursor: pointer;
+}
+
+.player-b .chip-text {
+    cursor: pointer;
+}
+
+.chip-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: aliceblue;
+    font-weight: bold;
+    
+}
+
+
+.dealer-chips {
+    height: 100%;  
+    width: 100%;
+    grid-area: z;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.dealer-chip {
+    position: relative;
+    margin-left: -35px;
+    
+}
+
+.dealer-chip img {
+    height: 75px;
+    border-radius: 25px;
+}
+
+
+.scores {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 0.6rem;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: 
+        "e f";
+    justify-items: center;
+    align-self: center;
+}
+
+#player-s {
+    grid-area: e;
+    width: 300px;
+    height: 35px;
+    background-color: hsl(160, 81%, 75%);
+    border-radius: 20px;
+    border-color: black;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#dealer-s {
+    grid-area: f;
+    width: 300px;
+    height: 35px;
+    background-color: hsl(160, 81%, 75%);
+    border-radius: 20px;
+    border-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.bottom_block {
+    margin-top: 30px;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: 
+        "c d";
+    justify-items: center;
+    align-self: center;
+}
+
+#player-hand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    grid-area: c;
+    margin-left: 80px;
+}
+
+#dealer-hand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    grid-area: d;
+    margin-left: 80px;
+}
+
+.card-container {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 135px;
+    perspective: 1000px;
+    margin-left: -80px;
+    --rotation: 0deg;
+    transform: rotate(var(--rotation));
+}
+
+.card {
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    transform: rotateY(0deg); /* Cards start face-down */
+}
+
+.card.flipped {
+    transform: rotateY(180deg); /* Show front side when flipped */
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 16px;
+}
+
+.front {
+    transform: rotateY(180deg); /* Initially hidden */
+}
+
+.back {
+    transform: rotateY(0deg);
+}
+
+/**/
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px; 
+    padding: 50px;
+    text-align: center;
+    align-items: center;
+}
+
+#hit_b:active, #stand_b:active, #go-home_b:active, #play-again_b:active, #bet-button:active, #bet-button:active, #new-round:active {
+
+    transform: scale(0.80);
+    background-color: hsl(73, 82%, 10%);
+    transition: transform 0.1s ease;
+
+}
+
+#hit_b:hover, #stand_b:hover, #bet-button:hover {
+
+    background-color: hsl(73, 82%, 40%);
+
+}
+
+#hit_b, #stand_b, #go-home_b, #play-again_b, #bet-button, #new-round {
+    
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    border-radius: 10px;
+    color: rgb(1, 15, 11);
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    padding: 10px 20px;
+    margin: 5px;
+    width: 150px;
+    height: 45px;
+    cursor: pointer;
+}
+
+#hit_b, #stand_b, #bet-button {
+    background-color: hsl(73, 82%, 59%);
+    box-shadow: 5px 0px 20px rgb(141, 195, 55);
+}
+
+/* ------------------- RESULT.html ------------------- */
+
+#play-again_b, #new-round { 
+    color: rgb(36, 33, 33);
+    background-color: hsl(180, 68%, 79%);
+    box-shadow: 5px 0px 20px hsl(202, 60%, 39%);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+#go-home_b {
+    color: whitesmoke;
+    background-color:  hsl(345, 80%, 29%);;
+    box-shadow: 5px 0px 20px hsl(0, 61%, 33%);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+#go-home_b:hover {
+    background-color:  hsl(345, 85%, 17%);
+}
+
+#play-again_b:hover, #new-round:hover {
+    background-color: hsl(180, 68%, 49%);
+}
+
+.result{
+    margin-left: -100px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    grid-area: a; 
+    color: hsl(76, 59%, 47%);
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;            
+    justify-content: center;   
+    align-items: center;       
+    height: 100%;              
+}
+
+
+@media (max-width: 850px), (max-height: 700px){
+
+    h1 {
+        font-size: 30px;
+    }
+
+    .top_block {
+        margin-top: -40px;
+    }
+
+    .rules ul{
+        font-size: 0.6rem;
+    }
+
+    .deck img {
+        margin-left: -50px;
+        margin-top: 30px;
+        height: 140px;
+        width: 100px;
+    }
+
+    
+    .chip-text {
+        font-size: 0.8rem;
+    }
+
+    .player-chip img {
+        height: 60px;
+        
+    }
+    .player-chips {
+        margin-left: 30px;}
+
+
+    .dealer-chip img {
+        height: 60px;
+    }
+
+    .player-b img {
+        height: 60px;
+    }    
+
+    .round-b img {
+        height: 60px;
+    }    
+
+    .card-container {
+        height: 140px;
+        width: 100px;
+    }
+
+    .scores {
+        margin-top: 0px;
+        font-size: 0.4rem;
+    }
+    .bottom_block {
+        margin-top: 10px;
+    }
+    
+    #player-s {
+        width: 210px;
+        height: 22px;
+    }
+    
+    #dealer-s {
+        width: 210px;
+        height: 22px;
+    }
+    
+    .buttons {
+        margin-top: -25px;
+        gap: 15px; 
+        
+    }
+
+    #hit_b, #stand_b, #go-home_b, #play-again_b, #bet-button,#new-round {
+        font-size: 8px;
+        padding: 10px 10px;
+        width: 100px;
+        height: 30px;
+    }
+
+    #round-bets-h2 {
+        font-size: 1rem;
+        justify-content: right;
+    }
+
+}
